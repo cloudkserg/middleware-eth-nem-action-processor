@@ -1,8 +1,11 @@
 {
-  "name": "middleware-eth-nem-action-processor",
-  "version": "0.0.0",
+  "name": "middleware_eth.nemActionProcessor",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "requirements": {
+    "middleware_eth.chronoSCProcessor": "1.0.0"
+  },
   "scripts": {
     "lint": "node ./node_modules/eslint/bin/eslint.js -c .eslintrc.js --ext .js --fix --ignore-path .eslintignore .",
     "test": "node ./node_modules/mocha/bin/mocha -t 90000 tests"
@@ -22,6 +25,7 @@
     "bignumber.js": "^4.1.0",
     "bunyan": "^1.8.12",
     "chronobank-smart-contracts": "1.1.*",
+    "middleware_common_infrastructure": "^1.0.0",
     "dotenv": "^4.0.0",
     "lodash": "^4.17.4",
     "mongoose": "^4.13.4",

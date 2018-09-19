@@ -18,6 +18,9 @@ mongoose.accounts = mongoose.createConnection(config.mongo.accounts.uri);
 
 const bunyan = require('bunyan'),
   scheduleService = require('./services/scheduleService'),
+  AmqpService = require('middleware_common_infrastructure/AmqpService'),
+  InfrastructureInfo = require('middleware_common_infrastructure/InfrastructureInfo'),
+  InfrastructureService = require('middleware_common_infrastructure/InfrastructureService'),
   log = bunyan.createLogger({name: 'core.nemActionProcessor'});
 
 [mongoose.accounts, mongoose.connection].forEach(connection =>
@@ -26,8 +29,27 @@ const bunyan = require('bunyan'),
     process.exit(0);
   })
 );
+const runSystem = async function () {
+  const rabbit = new AmqpService(
+    config.systemRabbit.url, 
+    config.systemRabbit.exchange,
+    config.systemRabbit.serviceName
+  );
+  const info = new InfrastructureInfo(require('./package.json'));
+  const system = new InfrastructureService(info, rabbit, {checkInterval: 10000});
+  await system.start();
+  system.on(system.REQUIREMENT_ERROR, ({requirement, version}) => {
+    log.error(`Not found requirement with name ${requirement.name} version=${requirement.version}.` +
+        ` Last version of this middleware=${version}`);
+    process.exit(1);
+  });
+  await system.checkRequirements();
+  system.periodicallyCheck();
+};
 
 let init = async () => {
+  if (config.checkSystem)
+    await runSystem();
 
   scheduleService();
 
