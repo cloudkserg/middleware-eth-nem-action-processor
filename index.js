@@ -1,4 +1,9 @@
 /**
+ * Copyright 2017–2018, LaborX PTY
+ * Licensed under the AGPL Version 3 license.
+ */
+
+/**
  * Middleware service for handling transfers to NEM crypto currency
  * Update balances & make transfers from ETH wallet to NEM
  * in received transactions from blockParser via amqp

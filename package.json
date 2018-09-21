@@ -8,18 +8,19 @@
   },
   "scripts": {
     "lint": "node ./node_modules/eslint/bin/eslint.js -c .eslintrc.js --ext .js --fix --ignore-path .eslintignore .",
+    "deploy:contracts": "cd ./node_modules/chronobank-smart-contracts && node --max_old_space_size=8000 ../truffle/build/cli.bundled.js migrate",
     "test": "node ./node_modules/mocha/bin/mocha -t 90000 tests"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/algebris/middleware-eth-nem-action-processor.git"
+    "url": "git+https://github.com/chronobank/middleware-eth-nem-action-processor.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "chronobank",
+  "license": "AGPL-3.0",
   "bugs": {
-    "url": "https://github.com/algebris/middleware-eth-nem-action-processor/issues"
+    "url": "https://github.com/chronobank/middleware-eth-nem-action-processor/issues"
   },
-  "homepage": "https://github.com/algebris/middleware-eth-nem-action-processor#readme",
+  "homepage": "https://github.com/chronobank/middleware-eth-nem-action-processor#readme",
   "dependencies": {
     "amqplib": "^0.5.2",
     "bignumber.js": "^4.1.0",
@@ -27,11 +28,14 @@
     "chronobank-smart-contracts": "1.1.*",
     "middleware_common_infrastructure": "^1.0.0",
     "dotenv": "^4.0.0",
+    "expect.js": "^0.3.1",
     "lodash": "^4.17.4",
     "mongoose": "^4.13.4",
     "mongoose-long": "^0.1.1",
     "nem-sdk": "^1.5.1",
     "node-schedule": "^1.3.0",
+    "request": "^2.87.0",
+    "request-promise": "^4.2.2",
     "require-all": "^2.2.0",
     "web3": "^0.19.0"
   },
@@ -40,6 +44,8 @@
     "chai": "^4.1.2",
     "eslint": "^4.11.0",
     "eslint-plugin-chronobank": "github:chronobank/eslint-plugin-chronobank",
+    "middleware-eth-blockprocessor": "github:chronobank/middleware-eth-blockprocessor",
+    "middleware-eth-chrono-sc-processor": "github:chronobank/middleware-eth-chrono-sc-processor",
     "mocha": "^4.0.1"
   }
 }

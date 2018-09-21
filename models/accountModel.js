@@ -1,4 +1,10 @@
-/** 
+/**
+ * Copyright 2017–2018, LaborX PTY
+ * Licensed under the AGPL Version 3 license.
+ * @author Egor Zuev <zyev.egor@gmail.com>
+ */
+
+/**
  * Mongoose model. Accounts
  * @module models/accountModel
  * @returns {Object} Mongoose model
@@ -27,7 +33,9 @@ const Account = new mongoose.Schema({
   },
   isActive: {type: Boolean, required: true, default: true},
   maxTimeDeposit: {type: mongoose.Schema.Types.Long, default: 0},
-  welcomeBonusSent: {type: Boolean, default: false}
+  welcomeBonusSent: {type: Boolean, default: false},
+  maxXemAmount: {type: mongoose.Schema.Types.Long, default: 0},
+  transferLimit: {type: Number, default: 0}
 });
 
-module.exports = mongoose.accounts.model(`${config.mongo.accounts.collectionPrefix}Account`, Account);
+module.exports = mongoose.model(`${config.mongo.accounts.collectionPrefix}Account`, Account);

@@ -20,7 +20,18 @@ install:
   - npm install -g pm2
 
 before_script:
-    - pm2 start index.js
+    - echo NEM_PORT=7890 >> .env
+    - echo NEM_HOST=http://bigalice2.nem.ninja >> .env
+    - echo NEM_TX_FEE=800000 >> .env
+    - echo SMART_CONTRACTS_PATH=$TRAVIS_BUILD_DIR/node_modules/middleware_eth.chronoSCProcessor/node_modules/chronobank-smart-contracts/build/contracts >> .env
+    - cd $TRAVIS_BUILD_DIR/node_modules/middleware_eth.blockProcessor && npm install
+    - cd $TRAVIS_BUILD_DIR/node_modules/middleware_eth.blockProcessor && pm2 start ipcConverter.js
+    - sleep 30 && cd $TRAVIS_BUILD_DIR/node_modules/middleware_eth.chronoSCProcessor && npm install
+    - cd $TRAVIS_BUILD_DIR/node_modules/middleware_eth.chronoSCProcessor/node_modules/chronobank-smart-contracts && mv migrations migrations_full && mv migrations-dev-full migrations
+    - sleep 30 && cd $TRAVIS_BUILD_DIR/node_modules/middleware_eth.chronoSCProcessor && npm run deploy:contracts
+    - sleep 30 && cd $TRAVIS_BUILD_DIR/node_modules/middleware_eth.chronoSCProcessor && pm2 start index.js
+    - sleep 30 && cd $TRAVIS_BUILD_DIR/node_modules/middleware_eth.blockProcessor && pm2 start index.js
+    - sleep 30 && cd $TRAVIS_BUILD_DIR
 
 script:
   - sleep 30 && npm test -- --coverage
@@ -43,13 +54,12 @@ after_success:
   - IMAGE_TAG_NAME="latest"
   - |
     if [ "$TRAVIS_BRANCH" == "master" ]; then
-      travis_wait 30 docker build -t gcr.io/deep-wares-144610/$TRAVIS_BRANCH/middleware-ethereum:$IMAGE_TAG_NAME --build-arg RELEASE=latest .
+      travis_wait 30 docker build -t gcr.io/deep-wares-144610/$TRAVIS_BRANCH/middleware-ethereum:$IMAGE_TAG_NAME --build-arg RELEASE=latest --build-arg GITHUB_API_KEY=$GITHUB_API_KEY .
       docker push gcr.io/deep-wares-144610/$TRAVIS_BRANCH/middleware-ethereum:$IMAGE_TAG_NAME
     elif [ "$TRAVIS_BRANCH" == "develop" ]; then
-      travis_wait 30 docker build -t gcr.io/deep-wares-144610/$TRAVIS_BRANCH/middleware-ethereum:$IMAGE_TAG_NAME --build-arg RELEASE=develop .
+      travis_wait 30 docker build -t gcr.io/deep-wares-144610/$TRAVIS_BRANCH/middleware-ethereum:$IMAGE_TAG_NAME --build-arg RELEASE=develop --build-arg GITHUB_API_KEY=$GITHUB_API_KEY .
       docker push gcr.io/deep-wares-144610/$TRAVIS_BRANCH/middleware-ethereum:$IMAGE_TAG_NAME
     fi;
-
 notifications:
   email: false
 
