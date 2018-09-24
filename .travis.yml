@@ -15,15 +15,16 @@ before_install:
   - sudo apt-get install python2.7 git-all pkg-config libncurses5-dev libssl-dev libnss3-dev libexpat-dev libc6-dev -y
 
 install:
+  - export CHECK_SYSTEM=0
+  - export NEM_PORT=7890
+  - export NEM_HOST=http://bigalice2.nem.ninja
+  - export NEM_TX_FEE=800000
+  - export SMART_CONTRACTS_PATH=$TRAVIS_BUILD_DIR/node_modules/middleware_eth.chronoSCProcessor/node_modules/chronobank-smart-contracts/build/contracts
   - sudo rabbitmq-plugins enable rabbitmq_web_stomp
   - npm install
   - npm install -g pm2
 
 before_script:
-    - echo NEM_PORT=7890 >> .env
-    - echo NEM_HOST=http://bigalice2.nem.ninja >> .env
-    - echo NEM_TX_FEE=800000 >> .env
-    - echo SMART_CONTRACTS_PATH=$TRAVIS_BUILD_DIR/node_modules/middleware_eth.chronoSCProcessor/node_modules/chronobank-smart-contracts/build/contracts >> .env
     - cd $TRAVIS_BUILD_DIR/node_modules/middleware_eth.blockProcessor && npm install
     - cd $TRAVIS_BUILD_DIR/node_modules/middleware_eth.blockProcessor && pm2 start ipcConverter.js
     - sleep 30 && cd $TRAVIS_BUILD_DIR/node_modules/middleware_eth.chronoSCProcessor && npm install
