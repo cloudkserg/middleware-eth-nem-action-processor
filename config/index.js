@@ -20,7 +20,7 @@ const config = {
     exchange: process.env.SYSTEM_RABBIT_EXCHANGE || 'internal',
     serviceName: process.env.SYSTEM_RABBIT_SERVICE_NAME || 'system' 
   },
-  checkSystem: process.env.CHECK_SYSTEM || true,
+  checkSystem: process.env.CHECK_SYSTEM ? parseInt(process.env.CHECK_SYSTEM) : true,
   mongo: {
     accounts: {
       uri: process.env.MONGO_ACCOUNTS_URI || process.env.MONGO_URI || 'mongodb://localhost:27017/data',
