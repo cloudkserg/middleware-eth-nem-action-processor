@@ -48,6 +48,11 @@ describe('core/nem processor', function () {
     };
 
     await accountModel.findOneAndUpdate({address: query.address}, query, {upsert: true});
+    
+    ctx.checkerPid = spawn('node', ['tests/utils/proxyChecker.js'], {
+      env: process.env, stdio: 'ignore'
+    });
+    await Promise.delay(5000);
   });
 
   after(async () => {
@@ -56,6 +61,7 @@ describe('core/nem processor', function () {
     await setHash.remove();
     await mongoose.disconnect();
     await web3.currentProvider.connection.end();
+    await ctx.checkerPid.kill();
   });
 
   it('test aggregate data base', async () => {

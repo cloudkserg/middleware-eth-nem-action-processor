@@ -15,7 +15,6 @@ before_install:
   - sudo apt-get install python2.7 git-all pkg-config libncurses5-dev libssl-dev libnss3-dev libexpat-dev libc6-dev -y
 
 install:
-  - export CHECK_SYSTEM=0
   - export NEM_PORT=7890
   - export NEM_HOST=http://bigalice2.nem.ninja
   - export NEM_TX_FEE=800000
