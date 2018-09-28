@@ -84,6 +84,7 @@ The options are presented below:
 | SYSTEM_RABBIT_SERVICE_NAME   | rabbitmq service name for infrastructure
 | SYSTEM_RABBIT_EXCHANGE   | rabbitmq exchange name for infrastructure
 | CHECK_SYSTEM | check infrastructure or not (default = true)
+| CHECK_WAIT_TIME | interval for wait respond from requirements
 | TIME_BONUS_RATE   | bonus convertation rate for xem bonus (xem/TIME_BONUS_RATE = nem chronobank:minute)
 | XEM_BONUS_WINDOW_START   | start block from which calculate the maximum balance
 | XEM_BONUS_WINDOW_END   | end block from which calculate the maximum balance
